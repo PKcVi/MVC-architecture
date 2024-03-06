@@ -1,0 +1,48 @@
+import React, { useContext, useRef, useState } from 'react'
+import './Navbar.css'
+
+import logo from '../Assets/logo.png'
+import cart_icon from '../Assets/cart_icon.png'
+import { Link } from 'react-router-dom'
+import { ShopContext } from '../../Context/ShopContext'
+
+//Navbar
+const Navbar = () => { 
+
+    //userstate
+    const [menu,setMenu] = useState("shop");
+    //cart counter
+    const {getTotalCartItems}= useContext(ShopContext);
+    //menu refrence
+    const menuRef = useRef();
+
+    const dropdown_totggle =(e)=>{
+        menuRef.current.classList.toggle('nav-menu-visiblr');
+        e.target.classList.toggle('open');
+    }
+
+  return (
+    <div className='navbar'>
+        <div className="nav-logo">
+            <img src={logo} alt="" />
+            <p>SHOPPER</p>
+        </div>
+        {/*<img className='nav_dropdown'onClick={dropdown_totggle} src={nav_dropdown} alt="" />*/}
+        <ul ref={menuRef} className="nav-menu">
+           <li onClick={()=>{setMenu("shop")}}><Link style={{textDecoration:'none'}} to='/'>Shop</Link>{menu==="shop"?<hr/>:<></>}</li>           {/*use ternary operators to hr tag "{menu==="shop"?<hr/>:<></>}" (the red line under the tab when selecting)*/}
+           <li onClick={()=>{setMenu("mens")}}><Link style={{textDecoration:'none'}} to='/mens'>Men</Link>{menu==="mens"?<hr/>:<></>}</li> 
+           <li onClick={()=>{setMenu("womens")}}><Link style={{textDecoration:'none'}} to='/womens'>Women</Link>{menu==="womens"?<hr/>:<></>}</li> 
+           <li onClick={()=>{setMenu("kids")}}><Link style={{textDecoration:'none'}} to='/kids'>Kids</Link>{menu==="kids"?<hr/>:<></>}</li> 
+        </ul>
+        <div className="nav-login-cart">
+            <Link to='/login'><button>Login</button></Link>
+            <Link to='/cart'><img src={cart_icon} alt="" /></Link>
+            {/*cart counter*/}
+            <div className="nav-cart-count">{getTotalCartItems()}</div>
+        </div>
+    </div>
+  )
+}
+
+export default Navbar
+
